@@ -1,6 +1,8 @@
 from pyspark import SparkContext
 
+# row_id name age numberOfConnections
 
+# find average number of connections on each age
 def parseData(line):
     lines = line.split("::")
     return (lines[2], float(lines[3]))
