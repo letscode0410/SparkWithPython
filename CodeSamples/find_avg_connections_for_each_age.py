@@ -13,5 +13,6 @@ age_connections_rdd = lines.map(parseData)
 connections_rdd = age_connections_rdd.mapValues(lambda x: (x, 1))
 aggregated_connections = connections_rdd.reduceByKey(lambda x, y: (x[0]+y[0], x[1]+y[1]))
 average_connections_rdd = aggregated_connections.map(lambda x: (x[0], x[1][0]/x[1][1])).sortBy(lambda x: x[1], False)
+# above one can be achieved with mapValues as well
 for item in average_connections_rdd.collect():
     print(item)
