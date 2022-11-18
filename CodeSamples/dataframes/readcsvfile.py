@@ -17,6 +17,8 @@ dataDf = spark.read\
     .load()
 
 dataDf.printSchema()
-dataDf.show()
+
+
+dataDf.where("order_customer_id > 10000").groupby("order_customer_id").count().show()
 
 
