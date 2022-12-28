@@ -58,6 +58,7 @@ if __name__ == '__main__':
     #    .sort(col("dob").desc()) works
     #    .sort(expr("dob desc"))  doesnt work
 
+   # .withColumn("dob", to_date(expr("concat(day,'/',month,'/',year)"),'d/M/y'))) \
 
     # .withColumn("year", expr("""
     #                   case when year < 21 then year + 2000
