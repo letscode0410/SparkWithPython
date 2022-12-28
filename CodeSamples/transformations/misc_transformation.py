@@ -55,6 +55,9 @@ if __name__ == '__main__':
         .drop("year", "day", "month") \
         .dropDuplicates(["name", "dob"]) \
         .sort("dob")
+    #    .sort(col("dob").desc()) works
+    #    .sort(expr("dob desc"))  doesnt work
+
 
     # .withColumn("year", expr("""
     #                   case when year < 21 then year + 2000
