@@ -1,6 +1,8 @@
 from pyspark import SparkConf
 from pyspark.sql import functions as f, SparkSession
 
+#https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html#aggregate-functions
+
 if __name__ == "__main__":
     my_rows = [("123", "10/04/1991"), ("124", "11/04/1991")]
 
