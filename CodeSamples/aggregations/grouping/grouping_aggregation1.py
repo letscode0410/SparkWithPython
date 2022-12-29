@@ -53,6 +53,11 @@ if __name__ == "__main__":
         .agg(f.countDistinct("InvoiceNo").alias("NumInvoices"),
              f.sum("Quantity").alias("TotalQuantity"),
              InvoiceValue)
-    invoices_weekwise_df.show()
+
+    invoices_weekwise_df.write \
+        .format("parquet") \
+        .mode("overwrite") \
+        .option("path", "../../data/invoices_parquet") \
+        .save()
 
 
