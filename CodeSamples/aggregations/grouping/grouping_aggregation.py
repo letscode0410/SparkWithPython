@@ -1,7 +1,7 @@
 from pyspark import SparkConf
 from pyspark.sql import functions as f, SparkSession
 
-#https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html#aggregate-functions
+# https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html#aggregate-functions
 
 if __name__ == "__main__":
     my_rows = [("123", "10/04/1991"), ("124", "11/04/1991")]
@@ -25,11 +25,11 @@ if __name__ == "__main__":
     #                    f.avg("UnitPrice").alias("Unit Price Average"),
     #                    f.countDistinct("StockCode").alias("Distinct Stock Codes")).show()
 
-# count * and count 1 gives same results whereas count field ignore the null values
-#     invoices_df.selectExpr("count(*) as `count *`", "count(1) as `count 1`",
-#                            "count(StockCode) as `count field`",
-#                            "sum(Quantity) as `Total Quantity`",
-#                            "count(distinct(StockCode)) as `Distinct Codes`").show()
+    # count * and count 1 gives same results whereas count field ignore the null values
+    #     invoices_df.selectExpr("count(*) as `count *`", "count(1) as `count 1`",
+    #                            "count(StockCode) as `count field`",
+    #                            "sum(Quantity) as `Total Quantity`",
+    #                            "count(distinct(StockCode)) as `Distinct Codes`").show()
 
     invoices_df.createOrReplaceTempView("invoices")
 
@@ -37,3 +37,10 @@ if __name__ == "__main__":
                   round(sum(Quantity * UnitPrice) ,2) as `Invoice Value`
                   from invoices 
                   group by Country, InvoiceNo""").show()
+
+    # https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.GroupedData.html#pyspark.sql.GroupedData
+
+    invoices_df.groupBy("Country", "InvoiceNo") \
+        .agg(f.sum("Quantity").alias("TotalQuantity"),
+             f.round(f.sum(f.expr("Quantity * UnitPrice")), 2).alias("Invoice"),
+             f.expr("round(sum(Quantity * UnitPrice) ,2)").alias("Invoice")).show()
