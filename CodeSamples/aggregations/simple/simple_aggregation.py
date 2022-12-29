@@ -18,7 +18,13 @@ if __name__ == "__main__":
         .option("path", "../../data/invoices.csv") \
         .load()
 
-    invoices_df.select(f.count('*').alias('count *'),\
-                       f.sum("Quantity").alias("Total Quantity"), \
-                       f.avg("UnitPrice").alias("Unit Price Average"),\
+    invoices_df.select(f.count('*').alias('count *'),
+                       f.sum("Quantity").alias("Total Quantity"),
+                       f.avg("UnitPrice").alias("Unit Price Average"),
                        f.countDistinct("StockCode").alias("Distinct Stock Codes")).show()
+
+# count * and count 1 gives same results whereas count field ignore the null values
+    invoices_df.selectExpr("count(*) as `count *`", "count(1) as `count 1`",
+                           "count(StockCode) as `count field`",
+                           "sum(Quantity) as `Total Quantity`",
+                           "count(distinct(StockCode)) as `Distinct Codes`").show()
