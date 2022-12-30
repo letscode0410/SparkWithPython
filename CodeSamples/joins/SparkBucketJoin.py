@@ -18,7 +18,7 @@ if __name__ == "__main__":
     spark.sql("use flight_db")
 
     flight_time_df1.coalesce(1).write.bucketBy(3, "id").mode("overwrite").saveAsTable("flight_db.flight_data1")
-    flight_time_df2.coalesce(1).write.bucketBy(3, "id").mode("overwrite").saveAsTable("flight_db.flight_data2")
+    flight_time_df2.coalesce(1).write.bucketBy(3, "id").mode("overwrite").saveAsTable("flight_db.flight_data2") try with one is 3 buckets and one is 2 bucket the there will be one exchange 
     '''
     flight_time_df1 = spark.read.table("flight_db.flight_data1")
     flight_time_df2 = spark.read.table("flight_db.flight_data2")
