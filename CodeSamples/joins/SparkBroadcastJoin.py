@@ -1,10 +1,10 @@
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
-from  pyspark.sql.functions import expr
+from pyspark.sql.functions import expr,broadcast
 
 if __name__ == "__main__":
     sparkConf = SparkConf()
-    sparkConf.set("spark.app.name", "Spark Outer Join")
+    sparkConf.set("spark.app.name", "Spark broadcast Join")
     sparkConf.set("spark.master", "local[3]")
 
     spark = SparkSession.builder \
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     products = spark.createDataFrame(product_list).toDF("prod_id", "prod_name", "list_price", "qty").withColumnRenamed("qty","prod_qty")
     join_condition = orders.prod_id == products.prod_id
 
-    combined_Data = orders.join(products, join_condition, "left")
+    combined_Data = orders.join(broadcast(products), join_condition, "left")
 
     combined_Data \
         .drop(products.prod_id) \
@@ -43,4 +43,6 @@ if __name__ == "__main__":
         .withColumn("list_price", expr("coalesce(list_price,prod_id)")) \
         .withColumn("prod_qty", expr("coalesce(prod_qty,prod_id)")) \
         .select("*").show()
+
+    input("enter some value")
 
